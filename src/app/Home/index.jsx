@@ -5,7 +5,7 @@ import AllJobs from "../../components/AllJobs";
 export default function Home() {
   const { isLoading, isError, data } = useQuery({
     queryKey: ["jobCategory"],
-    queryFn: async () => axios.get("/job-category"),
+    queryFn: async () => await axios.get("/job-category"),
   });
   if (isError) {
     return <h1>Internal sever error</h1>;
