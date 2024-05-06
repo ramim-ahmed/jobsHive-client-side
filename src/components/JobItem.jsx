@@ -5,7 +5,7 @@ export default function JobItem({ item }) {
   const { name, avatar } = buyer || {};
   return (
     <div className="border-b border-opacity-15">
-      <div className=" bg-gray-50 p-5">
+      <div className=" bg-gray-50 bg-opacity-15 p-3">
         <div className="flex items-center justify-between">
           <div>
             <div className="flex items-center space-x-4">
@@ -43,7 +43,7 @@ export default function JobItem({ item }) {
             </button>
           </div>
         </div>
-        <div className="mt-4 space-y-2">
+        <div className="mt-2 space-y-1">
           <h1 className="text-xl font-medium">{title}</h1>
           <p>{description}</p>
           <p>
@@ -52,7 +52,7 @@ export default function JobItem({ item }) {
           <p>Deadline: {deadline}</p>
         </div>
         <div className="mt-4">
-          <button className="bg-indigo-500 text-white px-5 py-1 rounded-3xl text-base font-medium">
+          <button className="bg-indigo-500 text-sm text-white px-5 py-1 rounded-3xl">
             Bid Now
           </button>
         </div>

@@ -12,7 +12,7 @@ export default function Home() {
   }
   return (
     <div className="min-h-screen ">
-      <div className="max-w-6xl mx-auto px-3 pt-8">
+      <div className="max-w-6xl mx-auto px-3 pt-4">
         <div className="grid grid-cols-12 gap-x-6">
           <div className="col-span-2">
             {isLoading ? (
@@ -21,7 +21,7 @@ export default function Home() {
               <ul className="space-y-2 border border-opacity-15">
                 {data?.data?.data?.map((category) => (
                   <li key={category._id}>
-                    <button className="bg-gray-50 p-4 w-full">
+                    <button className="bg-gray-50 bg-opacity-15 p-4 w-full">
                       {category.title}
                     </button>
                   </li>
