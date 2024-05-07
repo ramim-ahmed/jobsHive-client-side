@@ -1,6 +1,20 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 export default function Registerform() {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [photo, setPhoto] = useState("");
+  const { signup } = useAuth();
+  const navigate = useNavigate();
+  const handleCreateNewUser = async (e) => {
+    e.preventDefault();
+    console.log({ username, email, password, photo });
+    await signup(email, password, username, photo);
+    navigate("/");
+  };
   return (
     <div className="w-full max-w-sm p-6 m-auto mx-auto bg-white rounded-lg shadow-md dark:bg-gray-800">
       <div className="flex justify-center mx-auto">
@@ -8,7 +22,7 @@ export default function Registerform() {
           <h1 className="text-xl font-medium">Register Now</h1>
         </div>
       </div>
-      <form className="mt-6">
+      <form onSubmit={handleCreateNewUser} className="mt-6">
         <div>
           <label
             htmlFor="username"
@@ -17,6 +31,8 @@ export default function Registerform() {
             Username
           </label>
           <input
+            onChange={(e) => setUsername(e.target.value)}
+            required
             type="text"
             className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
           />
@@ -31,6 +47,8 @@ export default function Registerform() {
             </label>
           </div>
           <input
+            onChange={(e) => setEmail(e.target.value)}
+            required
             type="email"
             className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
           />
@@ -45,6 +63,8 @@ export default function Registerform() {
             </label>
           </div>
           <input
+            onChange={(e) => setPassword(e.target.value)}
+            required
             type="password"
             className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
           />
@@ -55,10 +75,12 @@ export default function Registerform() {
               htmlFor="photoURL"
               className="block text-sm text-gray-800 dark:text-gray-200"
             >
-              PhotoURL
+              Photo URL
             </label>
           </div>
           <input
+            onChange={(e) => setPhoto(e.target.value)}
+            required
             type="url"
             className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
           />
