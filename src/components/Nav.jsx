@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import UserProfile from "./UserProfile";
 
 export default function Nav() {
   const { authUser } = useAuth();
@@ -10,18 +11,7 @@ export default function Nav() {
           JobsHive
         </Link>
         {authUser ? (
-          <div className="flex items-center space-x-2">
-            <img
-              className="w-12 h-12 object-cover rounded-full"
-              src={authUser?.photoURL}
-              alt=""
-            />
-            <div>
-              <h4 className="font-medium text-lg">
-                Hi, {authUser?.displayName}
-              </h4>
-            </div>
-          </div>
+          <UserProfile />
         ) : (
           <div className="space-x-4">
             <Link to="/login">Login</Link>

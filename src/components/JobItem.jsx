@@ -1,8 +1,19 @@
 /* eslint-disable react/prop-types */
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "./ui/input";
+import useAuth from "@/hooks/useAuth";
+
 export default function JobItem({ item }) {
   const { buyer, deadline, category, title, description, maxPrice, minPrice } =
     item || {};
   const { name, avatar } = buyer || {};
+  const { authUser } = useAuth();
   return (
     <div className="border-b border-opacity-15">
       <div className=" bg-gray-50 bg-opacity-15 p-3">
@@ -52,9 +63,30 @@ export default function JobItem({ item }) {
           <p>Deadline: {deadline}</p>
         </div>
         <div className="mt-4">
-          <button className="bg-indigo-500 text-sm text-white px-5 py-1 rounded-3xl">
-            Bid Now
-          </button>
+          <Dialog>
+            <DialogTrigger>
+              <button className="bg-indigo-500 text-sm text-white px-5 py-1 rounded-3xl">
+                Bid Now
+              </button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogDescription>
+                  <form className="space-y-4">
+                    <Input type="text" defaultValue={authUser?.displayName} />
+
+                    <Input type="email" defaultValue={authUser?.email} />
+
+                    <Input
+                      type="number"
+                      defaultValue={0.0}
+                      placeholder="bid amount"
+                    />
+                  </form>
+                </DialogDescription>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     </div>

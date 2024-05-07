@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "../../axios/axios";
 import AllJobs from "../../components/AllJobs";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   const { isLoading, isError, data } = useQuery({
@@ -20,15 +21,18 @@ export default function Home() {
             ) : (
               <ul className="space-y-2 border border-opacity-15">
                 <li>
-                  <button className="bg-gray-50 text-left bg-opacity-15 p-4 w-full">
+                  <Button className="w-full bg-[#6366F1] rounded-none flex justify-start text-left border-none">
                     All Category
-                  </button>
+                  </Button>
                 </li>
                 {data?.data?.data?.map((category) => (
                   <li key={category._id}>
-                    <button className="bg-gray-50 text-left bg-opacity-15 p-4 w-full">
+                    <Button
+                      variant="outline"
+                      className="w-full flex justify-start border-none"
+                    >
                       {category.title}
-                    </button>
+                    </Button>
                   </li>
                 ))}
               </ul>
