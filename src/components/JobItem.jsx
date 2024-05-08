@@ -8,12 +8,47 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "./ui/input";
 import useAuth from "@/hooks/useAuth";
+import DateSelect from "./DateSelect";
+import { useRef, useState } from "react";
+import { Button } from "./ui/button";
+import { useMutation } from "@tanstack/react-query";
+import axios from "@/axios/axios";
+import toast from "react-hot-toast";
 
 export default function JobItem({ item }) {
   const { buyer, deadline, category, title, description, maxPrice, minPrice } =
     item || {};
   const { name, avatar } = buyer || {};
+  const bidInputRef = useRef();
+  const commentInputRef = useRef();
   const { authUser } = useAuth();
+  const [date, setDate] = useState();
+  const { mutateAsync: placeNewBid } = useMutation({
+    mutationFn: async (data) => await axios.post("/bids/create-new", data),
+  });
+
+  const handlePlaceBid = async (e) => {
+    e.preventDefault();
+    const data = {
+      buyer: {
+        name: buyer?.name,
+        email: buyer?.email,
+      },
+      user: {
+        name: authUser?.displayName,
+        email: authUser?.email,
+      },
+      bidPrice: bidInputRef.current.value,
+      deadline: date,
+      comment: commentInputRef.current.value,
+    };
+    try {
+      await placeNewBid(data);
+      toast.success("Bid Requested Successfully!!");
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   return (
     <div className="border-b border-opacity-15">
       <div className=" bg-gray-50 bg-opacity-15 p-3">
@@ -65,23 +100,54 @@ export default function JobItem({ item }) {
         <div className="mt-4">
           <Dialog>
             <DialogTrigger>
-              <button className="bg-indigo-500 text-sm text-white px-5 py-1 rounded-3xl">
-                Bid Now
+              <button
+                className={`bg-indigo-500 text-sm text-white px-5 py-1 rounded-3xl ${
+                  buyer?.email === authUser?.email ? "cursor-not-allowed" : ""
+                }`}
+              >
+                {buyer?.email === authUser?.email
+                  ? "Not Permitted"
+                  : "Bid Request"}
               </button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
                 <DialogDescription>
-                  <form className="space-y-4">
-                    <Input type="text" defaultValue={authUser?.displayName} />
-
-                    <Input type="email" defaultValue={authUser?.email} />
-
-                    <Input
-                      type="number"
-                      defaultValue={0.0}
-                      placeholder="bid amount"
-                    />
+                  <form onSubmit={handlePlaceBid} className="space-y-4">
+                    <div>
+                      <Input
+                        readOnly
+                        type="text"
+                        defaultValue={authUser?.displayName}
+                      />
+                    </div>
+                    <div>
+                      <Input
+                        readOnly
+                        type="email"
+                        defaultValue={authUser?.email}
+                      />
+                    </div>
+                    <div>
+                      <Input
+                        ref={bidInputRef}
+                        type="number"
+                        placeholder="bid amount"
+                      />
+                    </div>
+                    <div>
+                      <DateSelect date={date} setDate={setDate} />
+                    </div>
+                    <div>
+                      <Input
+                        ref={commentInputRef}
+                        type="text"
+                        placeholder="comment"
+                      />
+                    </div>
+                    <Button type="submit" className="w-full">
+                      Place Now
+                    </Button>
                   </form>
                 </DialogDescription>
               </DialogHeader>
