@@ -17,8 +17,16 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 export default function JobItem({ item }) {
-  const { buyer, deadline, category, title, description, maxPrice, minPrice } =
-    item || {};
+  const {
+    _id,
+    buyer,
+    deadline,
+    category,
+    title,
+    description,
+    maxPrice,
+    minPrice,
+  } = item || {};
   const { name, avatar } = buyer || {};
   const bidInputRef = useRef();
   const commentInputRef = useRef();
@@ -35,14 +43,12 @@ export default function JobItem({ item }) {
       return navigate("/login");
     }
     const data = {
-      buyer: {
-        name: buyer?.name,
-        email: buyer?.email,
-      },
+      buyer,
       user: {
         name: authUser?.displayName,
         email: authUser?.email,
       },
+      postedJob: _id,
       bidPrice: bidInputRef.current.value,
       deadline: date,
       comment: commentInputRef.current.value,

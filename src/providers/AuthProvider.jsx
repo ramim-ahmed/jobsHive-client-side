@@ -12,6 +12,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import toast from "react-hot-toast";
+import axios from "@/axios/axios";
 export const AuthContext = createContext();
 export default function AuthProvider({ children }) {
   const [authUser, setAuthUser] = useState(null);
@@ -85,9 +86,18 @@ export default function AuthProvider({ children }) {
   //   observer auth state changes
   useEffect(() => {
     const auth = getAuth();
-    const unSubscribe = onAuthStateChanged(auth, (user) => {
+    const unSubscribe = onAuthStateChanged(auth, async (user) => {
       setAuthUser(user);
-      setLoading(false);
+      const loggedUser = { email: user?.email };
+      if (user) {
+        await axios.post("/token/access-token", loggedUser, {
+          withCredentials: true,
+        });
+      } else {
+        await axios.post("/token/clear-token", loggedUser, {
+          withCredentials: true,
+        });
+      }
     });
     return () => unSubscribe();
   }, []);

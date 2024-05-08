@@ -25,7 +25,6 @@ export default function MyPostJobs() {
       </div>
     );
   }
-  console.log(data);
   return (
     <div className="px-3 my-10">
       <div className="max-w-6xl mx-auto bg-gray-50 p-10">
