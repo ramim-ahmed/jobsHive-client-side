@@ -14,6 +14,7 @@ import { Button } from "./ui/button";
 import { useMutation } from "@tanstack/react-query";
 import axios from "@/axios/axios";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export default function JobItem({ item }) {
   const { buyer, deadline, category, title, description, maxPrice, minPrice } =
@@ -21,6 +22,7 @@ export default function JobItem({ item }) {
   const { name, avatar } = buyer || {};
   const bidInputRef = useRef();
   const commentInputRef = useRef();
+  const navigate = useNavigate();
   const { authUser } = useAuth();
   const [date, setDate] = useState();
   const { mutateAsync: placeNewBid } = useMutation({
@@ -29,6 +31,9 @@ export default function JobItem({ item }) {
 
   const handlePlaceBid = async (e) => {
     e.preventDefault();
+    if (!authUser) {
+      return navigate("/login");
+    }
     const data = {
       buyer: {
         name: buyer?.name,
@@ -95,12 +100,13 @@ export default function JobItem({ item }) {
           <p>
             Range: ${minPrice} - ${maxPrice}
           </p>
-          <p>Deadline: {deadline}</p>
+          <p>Deadline: {new Date(deadline).toLocaleDateString()}</p>
         </div>
         <div className="mt-4">
           <Dialog>
             <DialogTrigger>
               <button
+                disabled={buyer?.email === authUser?.email ? true : false}
                 className={`bg-indigo-500 text-sm text-white px-5 py-1 rounded-3xl ${
                   buyer?.email === authUser?.email ? "cursor-not-allowed" : ""
                 }`}
@@ -136,7 +142,11 @@ export default function JobItem({ item }) {
                       />
                     </div>
                     <div>
-                      <DateSelect date={date} setDate={setDate} />
+                      <DateSelect
+                        date={date}
+                        setDate={setDate}
+                        title={"Pick a Date when completed this job"}
+                      />
                     </div>
                     <div>
                       <Input

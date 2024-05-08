@@ -10,7 +10,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-export default function DateSelect({ date, setDate }) {
+export default function DateSelect({ date, setDate, title }) {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -22,7 +22,7 @@ export default function DateSelect({ date, setDate }) {
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, "PPP") : <span>Pick a date For Deadline</span>}
+          {date ? format(date, "PPP") : <span>{title}</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">

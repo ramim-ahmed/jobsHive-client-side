@@ -28,8 +28,10 @@ export default function AllJobs() {
     <div className="border border-opacity-15">
       {isLoading ? (
         <h1>loading...</h1>
-      ) : (
+      ) : data?.data?.data?.length ? (
         data?.data?.data?.map((item) => <JobItem item={item} key={item._id} />)
+      ) : (
+        <h1>No Jobs</h1>
       )}
       {data?.data?.data?.length && (
         <Pagination

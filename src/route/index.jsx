@@ -29,7 +29,7 @@ const routes = createBrowserRouter([
         element: <MyPostJobs />,
       },
       {
-        path: "/my-bids",
+        path: "/my-bids-request",
         element: <MyBids />,
       },
       {
